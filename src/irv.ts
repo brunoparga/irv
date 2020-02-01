@@ -1,11 +1,5 @@
 // Instant-runoff voting
 
-// Defining types
-
-type Candidate = string;
-type Ballot = Candidate[];
-type Tally = Record<Candidate, number>;
-
 // Helper functions
 
 // evaluate: returns the winning candidate if one exists, null otherwise.
@@ -72,7 +66,6 @@ export function eliminate(votes: Ballot[], tally: Tally): Ballot[] {
 // Main function
 export default function IRV(votes: Ballot[]): Candidate {
   const tally = tallyVotes(votes);
-  console.log(tally);
   // Base case: there is a winning candidate
   // evaluate(tally) returns a winner
   const result = evaluate(tally);

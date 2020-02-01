@@ -1,5 +1,6 @@
 import fs from 'fs';
 import IRV from './irv';
+// import rankedPairs from './rankedPairs';
 
 // First, run this on the console of the results page:
 // const votes = JSON.stringify(
@@ -22,4 +23,10 @@ votes.forEach((vote) => {
 });
 const anonymizedVotes = filteredVotes.map((vote) => vote.slice(4, 20));
 
-console.log(IRV(anonymizedVotes));
+console.log(`In the actual election, IRV elects ${IRV(anonymizedVotes)}`);
+anonymizedVotes[0].forEach((removedCandidate) => {
+  const votesWithoutCand = anonymizedVotes.map((ballot) => ballot
+    .filter((candidate) => candidate !== removedCandidate));
+  console.log(`Eliminating ${removedCandidate} elects ${IRV(votesWithoutCand)}`);
+});
+// console.log(rankedPairs(anonymizedVotes));

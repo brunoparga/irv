@@ -1,0 +1,54 @@
+import { sortPairs, tallyBallotPairs } from './rankedPairs';
+
+const ballot = ['Jeb!', 'Butti', 'Macron', 'Tru-doe'] as Ballot;
+
+const emptyPairs = new Map() as Pairs;
+const existingPairs = new Map() as Pairs;
+existingPairs.set(JSON.stringify(['Jeb!', 'Butti']), 1);
+existingPairs.set(JSON.stringify(['Jeb!', 'Tru-doe']), 1);
+existingPairs.set(JSON.stringify(['Jeb!', 'Macron']), 1);
+existingPairs.set(JSON.stringify(['Butti', 'Tru-doe']), 1);
+existingPairs.set(JSON.stringify(['Butti', 'Macron']), 1);
+existingPairs.set(JSON.stringify(['Tru-doe', 'Macron']), 1);
+
+const sortablePairs = new Map() as Pairs;
+sortablePairs.set(JSON.stringify(['Jeb!', 'Butti']), 2);
+sortablePairs.set(JSON.stringify(['Jeb!', 'Tru-doe']), 3);
+sortablePairs.set(JSON.stringify(['Jeb!', 'Macron']), 3);
+sortablePairs.set(JSON.stringify(['Butti', 'Tru-doe']), 5);
+sortablePairs.set(JSON.stringify(['Butti', 'Macron']), 4);
+sortablePairs.set(JSON.stringify(['Tru-doe', 'Macron']), 1);
+
+test('tallyBallotPairs works with the first ballot', () => {
+  const result = new Map() as Pairs;
+  result.set(JSON.stringify(['Jeb!', 'Butti']), 1);
+  result.set(JSON.stringify(['Jeb!', 'Macron']), 1);
+  result.set(JSON.stringify(['Jeb!', 'Tru-doe']), 1);
+  result.set(JSON.stringify(['Butti', 'Macron']), 1);
+  result.set(JSON.stringify(['Butti', 'Tru-doe']), 1);
+  result.set(JSON.stringify(['Macron', 'Tru-doe']), 1);
+  expect(tallyBallotPairs(emptyPairs, ballot)).toEqual(result);
+});
+
+test('tallyBallotPairs works when there is already a tally', () => {
+  const result = new Map();
+  result.set(JSON.stringify(['Jeb!', 'Butti']), 2);
+  result.set(JSON.stringify(['Jeb!', 'Macron']), 2);
+  result.set(JSON.stringify(['Jeb!', 'Tru-doe']), 2);
+  result.set(JSON.stringify(['Butti', 'Macron']), 2);
+  result.set(JSON.stringify(['Butti', 'Tru-doe']), 2);
+  result.set(JSON.stringify(['Macron', 'Tru-doe']), 1);
+  result.set(JSON.stringify(['Tru-doe', 'Macron']), 1);
+  expect(tallyBallotPairs(existingPairs, ballot)).toEqual(result);
+});
+
+test('sortPairs sorts the pairs it receives', () => {
+  const result = [];
+  result.push([['Butti', 'Tru-doe'], 5]);
+  result.push([['Butti', 'Macron'], 4]);
+  result.push([['Jeb!', 'Tru-doe'], 3]);
+  result.push([['Jeb!', 'Macron'], 3]);
+  result.push([['Jeb!', 'Butti'], 2]);
+  result.push([['Tru-doe', 'Macron'], 1]);
+  expect(sortPairs(sortablePairs)).toEqual(result);
+});
