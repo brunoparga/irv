@@ -1,5 +1,6 @@
 import fs from 'fs';
-import IRV from './irv';
+import IIA from './irv-iia'
+import IRV_IIA from './irv-iia';
 // import rankedPairs from './rankedPairs';
 
 // First, run this on the console of the results page:
@@ -23,10 +24,5 @@ votes.forEach((vote) => {
 });
 const anonymizedVotes = filteredVotes.map((vote) => vote.slice(4, 20));
 
-console.log(`In the actual election, IRV elects ${IRV(anonymizedVotes)}`);
-anonymizedVotes[0].forEach((removedCandidate) => {
-  const votesWithoutCand = anonymizedVotes.map((ballot) => ballot
-    .filter((candidate) => candidate !== removedCandidate));
-  console.log(`Eliminating ${removedCandidate} elects ${IRV(votesWithoutCand)}`);
-});
+IRV_IIA(anonymizedVotes)
 // console.log(rankedPairs(anonymizedVotes));
