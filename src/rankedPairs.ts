@@ -20,12 +20,12 @@ function tallyCandidate(currentCandidate: Candidate) {
     losingCandidate: Candidate): Pairs {
     const currentPair: StringPair = JSON
       .stringify([currentCandidate, losingCandidate]);
-  if (cumulativePairs.has(currentPair)) {
+    if (cumulativePairs.has(currentPair)) {
       return cumulativePairs.set(
         currentPair, cumulativePairs.get(currentPair) as number + 1,
       );
-  }
-  return cumulativePairs.set(currentPair, 1);
+    }
+    return cumulativePairs.set(currentPair, 1);
   };
 }
 
@@ -59,8 +59,18 @@ export function sortPairs(pairs: Pairs): RankedPairs {
     .sort((pair1, pair2) => pair2[1] - pair1[1])
     .map((pair) => JSON.parse(pair[0]));
 }
-// function generateGraph(rankedPairs: Pairs): DAG
-// function findSource(graph: DAG): Candidate
+
+// 3 - Create a direct acyclical graph (here, hopefully, represented by a humble
+// object) to figure out the order of the candidates
+export function generateGraph(pairs: RankedPairs): Graph {
+  return pairs.reduce(
+    (currentGraph: Graph, [winner, loser]: Pair): Graph =>
+      currentGraph[winner][defeats].push(loser),
+    {} as Graph,
+  );
+}
+
+// function findSource(graph: Graph): Candidate
 
 // Main function. Calls, in order, the functions that turn ballots into
 export default function rankedPairs(votes: Ballot[]): Candidate {
