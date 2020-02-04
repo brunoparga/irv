@@ -1,7 +1,7 @@
 {
-  "name": "irv",
+  "name": "voting",
   "version": "1.0.0",
-  "description": "Run an Instant-Runoff election",
+  "description": "Run ranked-choice elections",
   "main": "./build/deamPolls.js",
   "scripts": {
     "lint": "eslint . --fix --ext .ts,.tsx",
@@ -9,6 +9,10 @@
     "start:run": "nodemon build/deamPolls.js",
     "start": "concurrently npm:start:*",
     "test": "jest"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/brunoparga/voting.git"
   },
   "author": "Bruno Parga",
   "license": "ISC",
