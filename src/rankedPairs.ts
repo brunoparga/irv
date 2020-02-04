@@ -41,6 +41,55 @@ export function tallyBallotPairs(pairs: Pairs, ballot: Ballot): Pairs {
   return tallyBallotPairs(newPairs, otherCandidates);
 }
 
+// Create the winner's side of the node
+function winnerNode(graph: Graph, winner: Candidate, loser: Candidate): Graph {
+  if (graph[winner]) {
+    graph[winner].defeats.push(loser);
+    return graph;
+  }
+  const newGraph = { ...graph };
+  newGraph[winner] = { defeats: [loser], defeatedBy: [], allWhoBeatThis: [] };
+  return newGraph;
+}
+
+// Create the loser's side of the node
+function loserNode(graph: Graph, loser: Candidate, winner: Candidate): Graph {
+  if (graph[loser]) {
+    graph[loser].defeatedBy.push(winner);
+    graph[loser]
+      .allWhoBeatThis
+      .concat(graph[winner].allWhoBeatThis)
+      .push(winner);
+    return graph;
+  }
+  const newGraph = { ...graph } as Graph;
+  newGraph[loser] = {
+    defeats: [],
+    defeatedBy: [winner],
+    allWhoBeatThis: [...graph[winner].allWhoBeatThis, winner],
+  };
+  return newGraph;
+}
+
+// Add a new node to the graph, showing the first candidate defeats the second
+function createNode(graph: Graph, winner: Candidate, loser: Candidate): Graph {
+  let newGraph = { ...graph } as Graph;
+  // Make the winner know about their loser
+  newGraph = winnerNode(newGraph, winner, loser);
+  // Make the loser know about this direct winner, and all other winners above
+  newGraph = loserNode(newGraph, loser, winner);
+  return newGraph;
+}
+
+// See if a node for this winner and loser is needed, creating it if so
+function createNodeIfNeeded(graph: Graph, [winner, loser]: Pair): Graph {
+  // If inserting a node would create a cycle, don't insert it
+  if (graph[winner] && graph[winner].allWhoBeatThis.includes(loser)) {
+    return graph;
+  }
+  return createNode(graph, winner, loser);
+}
+
 // Functions whose composition implements the voting method
 // 1 - turn the list of ballots into a count of how many times a given candidate
 // is preferred over another one. For example, saying that Jeb! is preferred
@@ -63,11 +112,7 @@ export function sortPairs(pairs: Pairs): RankedPairs {
 // 3 - Create a direct acyclical graph (here, hopefully, represented by a humble
 // object) to figure out the order of the candidates
 export function generateGraph(pairs: RankedPairs): Graph {
-  return pairs.reduce(
-    (currentGraph: Graph, [winner, loser]: Pair): Graph =>
-      currentGraph[winner][defeats].push(loser),
-    {} as Graph,
-  );
+  return pairs.reduce(createNodeIfNeeded, {} as Graph);
 }
 
 // function findSource(graph: Graph): Candidate

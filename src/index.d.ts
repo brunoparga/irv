@@ -7,7 +7,7 @@ type Pair = [Candidate, Candidate]
 type StringPair = string;
 type Pairs = Map<StringPair, number>
 type RankedPairs = Pair[]
-interface CandidateData {
+type CandidateData = {
   defeats: Candidate[];
   defeatedBy: Candidate[];
   allWhoBeatThis: Candidate[];
