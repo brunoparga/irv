@@ -11,17 +11,22 @@
 // votes, and add one in turn to a graph as long as they do not create a cycle
 // (which would create an ambiguity). The completed graph shows the winner.
 
-// 2-Helper functions
-function tallyCurrentCandidate(
-  currentCandidate: Candidate,
-  cumulativePairs: Pairs,
-  losingCandidate: Candidate,
-): Pairs {
-  const currentPair: StringPair = JSON.stringify([currentCandidate, losingCandidate]);
+// Helper functions
+
+// For a given candidate in a given ballot, count him as higher than all
+// subsequent candidates
+function tallyCandidate(currentCandidate: Candidate) {
+  return function tallyClosure(cumulativePairs: Pairs,
+    losingCandidate: Candidate): Pairs {
+    const currentPair: StringPair = JSON
+      .stringify([currentCandidate, losingCandidate]);
   if (cumulativePairs.has(currentPair)) {
-    return cumulativePairs.set(currentPair, cumulativePairs.get(currentPair) as number + 1);
+      return cumulativePairs.set(
+        currentPair, cumulativePairs.get(currentPair) as number + 1,
+      );
   }
   return cumulativePairs.set(currentPair, 1);
+  };
 }
 
 // Given a current tally and a new ballot, return a new tally with that ballot
@@ -32,12 +37,7 @@ export function tallyBallotPairs(pairs: Pairs, ballot: Ballot): Pairs {
   }
   const [currentCandidate, ...otherCandidates] = ballot;
   const newPairs = otherCandidates
-    .reduce(
-      (cumulativePairs: Pairs,
-        losingCandidate: Candidate) => tallyCurrentCandidate(
-        currentCandidate, cumulativePairs, losingCandidate,
-      ), pairs,
-    );
+    .reduce(tallyCandidate(currentCandidate), pairs);
   return tallyBallotPairs(newPairs, otherCandidates);
 }
 
