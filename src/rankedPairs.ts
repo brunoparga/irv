@@ -24,6 +24,8 @@ function tallyCurrentCandidate(
   return cumulativePairs.set(currentPair, 1);
 }
 
+// Given a current tally and a new ballot, return a new tally with that ballot
+// included
 export function tallyBallotPairs(pairs: Pairs, ballot: Ballot): Pairs {
   if (ballot.length === 0) {
     return pairs;
@@ -39,11 +41,18 @@ export function tallyBallotPairs(pairs: Pairs, ballot: Ballot): Pairs {
   return tallyBallotPairs(newPairs, otherCandidates);
 }
 
-// Functions I need
+// Functions whose composition implements the voting method
+// 1 - turn the list of ballots into a count of how many times a given candidate
+// is preferred over another one. For example, saying that Jeb! is preferred
+// over Governor Polis by 757,638 voters.
 export function tallyPairs(votes: Ballot[]): Pairs {
   const initialTally: Pairs = new Map();
   return votes.reduce(tallyBallotPairs, initialTally);
 }
+
+// 2 - sort (rank) the list of pairs, from strongest to weakest margin of
+// victory. Here I get rid of the JSON string I had to include in the function
+// above.
 export function sortPairs(pairs: Pairs): RankedPairs {
   return Array
     .from(pairs.entries())
@@ -53,8 +62,9 @@ export function sortPairs(pairs: Pairs): RankedPairs {
 // function generateGraph(rankedPairs: Pairs): DAG
 // function findSource(graph: DAG): Candidate
 
+// Main function. Calls, in order, the functions that turn ballots into
 export default function rankedPairs(votes: Ballot[]): Candidate {
-  tallyPairs(votes);
+  sortPairs(tallyPairs(votes));
   // return findSource(generateGraph(sortPairs(tallyPairs(votes))))
   return 'Jeb!';
 }
