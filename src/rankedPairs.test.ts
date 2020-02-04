@@ -49,11 +49,11 @@ test('tallyBallotPairs works when there is already a tally', () => {
 
 test('sortPairs sorts the pairs it receives', () => {
   const result = [];
-  result.push([['Butti', 'Tru-doe'], 5]);
-  result.push([['Butti', 'Macron'], 4]);
-  result.push([['Jeb!', 'Tru-doe'], 3]);
-  result.push([['Jeb!', 'Macron'], 3]);
-  result.push([['Jeb!', 'Butti'], 2]);
-  result.push([['Tru-doe', 'Macron'], 1]);
+  result.push(['Butti', 'Tru-doe']);
+  result.push(['Butti', 'Macron']);
+  result.push(['Jeb!', 'Tru-doe']);
+  result.push(['Jeb!', 'Macron']);
+  result.push(['Jeb!', 'Butti']);
+  result.push(['Tru-doe', 'Macron']);
   expect(sortPairs(sortablePairs)).toEqual(result);
 });

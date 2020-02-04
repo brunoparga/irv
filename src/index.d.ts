@@ -6,4 +6,4 @@ type Pair = [Candidate, Candidate]
 // Pair must be stringified because JavaScript
 type StringPair = string;
 type Pairs = Map<StringPair, number>
-type RankedPairs = Array<[Pair, number]>
+type RankedPairs = Pair[]

@@ -57,7 +57,7 @@ export function sortPairs(pairs: Pairs): RankedPairs {
   return Array
     .from(pairs.entries())
     .sort((pair1, pair2) => pair2[1] - pair1[1])
-    .map((pair) => [JSON.parse(pair[0]), pair[1]]);
+    .map((pair) => JSON.parse(pair[0]));
 }
 // function generateGraph(rankedPairs: Pairs): DAG
 // function findSource(graph: DAG): Candidate
