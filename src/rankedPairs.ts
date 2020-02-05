@@ -48,25 +48,34 @@ function winnerNode(graph: Graph, winner: Candidate, loser: Candidate): Graph {
     return graph;
   }
   const newGraph = { ...graph };
-  newGraph[winner] = { defeats: [loser], defeatedBy: [], allWhoBeatThis: [] };
+  newGraph[winner] = { defeats: [loser], defeatedBy: [], winners: [] };
   return newGraph;
+}
+
+// (Naively?) finds all candidates which beat this one through some path
+function findWinners(
+  graph: Graph, loser: Candidate, winner: Candidate,
+): Candidate[] {
+  return graph[loser].winners
+    .concat(
+      graph[winner].winners
+        .filter((candidate) => !graph[loser].winners.includes(candidate)),
+    )
+    .concat(winner);
 }
 
 // Create the loser's side of the node
 function loserNode(graph: Graph, loser: Candidate, winner: Candidate): Graph {
-  if (graph[loser]) {
-    graph[loser].defeatedBy.push(winner);
-    graph[loser]
-      .allWhoBeatThis
-      .concat(graph[winner].allWhoBeatThis)
-      .push(winner);
-    return graph;
-  }
   const newGraph = { ...graph } as Graph;
+  if (newGraph[loser]) {
+    newGraph[loser].defeatedBy.push(winner);
+    newGraph[loser].winners = findWinners(newGraph, loser, winner);
+    return newGraph;
+  }
   newGraph[loser] = {
     defeats: [],
     defeatedBy: [winner],
-    allWhoBeatThis: [...graph[winner].allWhoBeatThis, winner],
+    winners: [...graph[winner].winners, winner],
   };
   return newGraph;
 }
@@ -84,7 +93,7 @@ function createNode(graph: Graph, winner: Candidate, loser: Candidate): Graph {
 // See if a node for this winner and loser is needed, creating it if so
 function createNodeIfNeeded(graph: Graph, [winner, loser]: Pair): Graph {
   // If inserting a node would create a cycle, don't insert it
-  if (graph[winner] && graph[winner].allWhoBeatThis.includes(loser)) {
+  if (graph[winner] && graph[winner].winners.includes(loser)) {
     return graph;
   }
   return createNode(graph, winner, loser);
@@ -111,15 +120,23 @@ export function sortPairs(pairs: Pairs): RankedPairs {
 
 // 3 - Create a direct acyclical graph (here, hopefully, represented by a humble
 // object) to figure out the order of the candidates
-export function generateGraph(pairs: RankedPairs): Graph {
+export function buildGraph(pairs: RankedPairs): Graph {
   return pairs.reduce(createNodeIfNeeded, {} as Graph);
 }
 
-// function findSource(graph: Graph): Candidate
+// Find the source of the graph, who is the winner of the election
+export function findSource(graph: Graph): Candidate {
+  let winner = '';
+  Object.entries(graph).forEach(([candidate, candidateData]) => {
+    if (candidateData.defeatedBy.length === 0) {
+      winner = candidate;
+    }
+  });
+  return winner;
+}
 
 // Main function. Calls, in order, the functions that turn ballots into
 export default function rankedPairs(votes: Ballot[]): Candidate {
-  sortPairs(tallyPairs(votes));
-  // return findSource(generateGraph(sortPairs(tallyPairs(votes))))
-  return 'Jeb!';
+  // The |> operator cannot make its way into ECMAScript even one day too soon!
+  return findSource(buildGraph(sortPairs(tallyPairs(votes))));
 }

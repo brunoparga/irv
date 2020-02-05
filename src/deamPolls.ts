@@ -1,7 +1,6 @@
 import fs from 'fs';
-import IIA from './irv-iia'
-import IRV_IIA from './irv-iia';
-// import rankedPairs from './rankedPairs';
+// import IRV_IIA from './irv-iia';
+import rankedPairs from './rankedPairs';
 
 // First, run this on the console of the results page:
 // const votes = JSON.stringify(
@@ -24,5 +23,5 @@ votes.forEach((vote) => {
 });
 const anonymizedVotes = filteredVotes.map((vote) => vote.slice(4, 20));
 
-IRV_IIA(anonymizedVotes)
-// console.log(rankedPairs(anonymizedVotes));
+// IRV_IIA(anonymizedVotes);
+console.log(rankedPairs(anonymizedVotes));

@@ -10,6 +10,6 @@ type RankedPairs = Pair[]
 type CandidateData = {
   defeats: Candidate[];
   defeatedBy: Candidate[];
-  allWhoBeatThis: Candidate[];
+  winners: Candidate[];
 }
 type Graph = Record<Candidate, CandidateData>

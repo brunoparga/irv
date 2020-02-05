@@ -2,3 +2,5 @@ build
 node_modules
 votes.json
 anonymized-votes.json
+manual-count.txt
+src/testData.ts
