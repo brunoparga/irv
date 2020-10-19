@@ -9,7 +9,7 @@ devDependencies:
   eslint-plugin-import: 2.22.0_eslint@6.8.0
   eslint-plugin-jest: 23.20.0_eslint@6.8.0+typescript@3.9.7
   jest: 25.5.4
-  nodemon: 2.0.4
+  nodemon: 2.0.6
   ts-jest: 25.5.1_jest@25.5.4+typescript@3.9.7
   typescript: 3.9.7
 lockfileVersion: 5.1
@@ -3581,7 +3581,7 @@ packages:
     optional: true
     resolution:
       integrity: sha512-SVfQ/wMw+DesunOm5cKqr6yDcvUTDl/yc97ybGHMrteNEY6oekXpNpS3lZwgLlwz0FLgHoiW28ZpmBHUDg37cw==
-  /nodemon/2.0.4:
+  /nodemon/2.0.6:
     dependencies:
       chokidar: 3.3.1
       debug: 3.2.6
@@ -3599,7 +3599,7 @@ packages:
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-Ltced+hIfTmaS28Zjv1BM552oQ3dbwPqI4+zI0SLgq+wpJhSyqgYude/aZa/3i31VCQWMfXJVxvu86abcam3uQ==
+      integrity: sha512-4I3YDSKXg6ltYpcnZeHompqac4E6JeAMpGm8tJnB9Y3T0ehasLa4139dJOcCrB93HHrUMsCrKtoAlXTqT5n4AQ==
   /nopt/1.0.10:
     dependencies:
       abbrev: 1.1.1
@@ -5373,6 +5373,6 @@ specifiers:
   eslint-plugin-import: 2.22.0
   eslint-plugin-jest: 23.20.0
   jest: 25.5.4
-  nodemon: 2.0.4
+  nodemon: 2.0.6
   ts-jest: 25.5.1
   typescript: 3.9.7
