@@ -1,6 +1,6 @@
 devDependencies:
   '@types/jest': 26.0.15
-  '@types/node': 13.13.31
+  '@types/node': 13.13.39
   '@typescript-eslint/eslint-plugin': 4.8.1_8d0850e71f524483417e807b99397456
   '@typescript-eslint/parser': 4.8.1_eslint@7.13.0+typescript@4.0.5
   concurrently: 5.3.0
@@ -645,6 +645,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-gBk54XbcRj8EKTi7Syo4JU4purbRJaZpkvMVs7+t+b9JaOtwsGo7vCbXdVJN3gH/wu/GyZGD8lAKo0qpQuNjOw==
+  /@types/node/13.13.39:
+    dev: true
+    resolution:
+      integrity: sha512-wct+WgRTTkBm2R3vbrFOqyZM5w0g+D8KnhstG9463CJBVC3UVZHMToge7iMBR1vDl/I+NWFHUeK9X+JcF0rWKw==
   /@types/normalize-package-data/2.4.0:
     dev: true
     resolution:
@@ -5537,7 +5541,7 @@ packages:
       integrity: sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==
 specifiers:
   '@types/jest': 26.0.15
-  '@types/node': 13.13.31
+  '@types/node': 13.13.39
   '@typescript-eslint/eslint-plugin': 4.8.1
   '@typescript-eslint/parser': 4.8.1
   concurrently: 5.3.0
